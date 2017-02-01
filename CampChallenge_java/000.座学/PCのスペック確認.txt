@@ -1,0 +1,11 @@
+﻿OS→Windows8 64ビット
+
+メモリー→8.0GB
+
+SSD→SAMSUNG MZNTD512 HAGL-0000
+
+CPU→Intel(R) Core(TM) i7-4650U @1.70GHz
+
+上記パソコンのスペックでございます。
+
+DirectXの使用とコンピュータのプロパティで確認致しました。
