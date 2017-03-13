@@ -41,6 +41,14 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
+
+    HttpSession hs = request.getSession();
+
+    //TOPへ戻ってきた時は必ずセッションを削除する。
+    hs.setAttribute("udb",null);
+    hs.invalidate();
+
+      out.write("\n");
       out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<html lang=\"ja\">\n");

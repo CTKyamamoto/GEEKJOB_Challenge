@@ -1,7 +1,7 @@
 package jums;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,23 +29,38 @@ public class InsertResult extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        //セッションスタート
-        HttpSession session = request.getSession();
-        
         try{
+            //セッションスタート
+            HttpSession session = request.getSession();
+            request.setCharacterEncoding("UTF-8");//セッションに格納する文字コードをUTF-8に変更    
+            String accesschk = request.getParameter("ac");
+            if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+            throw new Exception("不正なアクセスです");
+        }
+            UserDataBeans udb = (UserDataBeans)session.getAttribute("udb");
+            
             //ユーザー情報に対応したJavaBeansオブジェクトに格納していく
             UserDataDTO userdata = new UserDataDTO();
-            userdata.setName((String)session.getAttribute("name"));
+            userdata.setName(udb.getName());
+            
+
             Calendar birthday = Calendar.getInstance();
-            userdata.setBirthday(birthday.getTime());
-            userdata.setType(Integer.parseInt((String)session.getAttribute("type")));
-            userdata.setTell((String)session.getAttribute("tell"));
-            userdata.setComment((String)session.getAttribute("comment"));
+            
+            //月だけ0～11の為-1をする。
+            int month = udb.getMonth()-1;
+            birthday.set(udb.getYear(), month, udb.getDay());
+            Date birthDate = birthday.getTime();
+            
+            userdata.setBirthday(birthDate);
+            userdata.setType(udb.getType());
+            userdata.setTell(udb.getTell());
+            userdata.setComment(udb.getComment());
             
             //DBへデータの挿入
-            UserDataDAO .getInstance().insert(userdata);
+            UserDataDAO.getInstance().insert(userdata);
             
             request.getRequestDispatcher("/insertresult.jsp").forward(request, response);
+        
         }catch(Exception e){
             //データ挿入に失敗したらエラーページにエラー文を渡して表示
             request.setAttribute("error", e.getMessage());

@@ -1,3 +1,10 @@
+<%
+    HttpSession hs = request.getSession();
+
+    //TOPへ戻ってきた時は必ずセッションを削除する。
+    hs.setAttribute("udb",null);
+    hs.invalidate();
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ja">
