@@ -25,23 +25,23 @@ public class Update extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        request.setCharacterEncoding("UTF-8");
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Update</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Update at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
+            //UserDataBeans udb = new UserDataBeans();
+            //DTOオブジェクトにマッピング。DB専用のパラメータに変換
+            UserDataDTO searchData = new UserDataDTO();
+            searchData.setUserID(Integer.parseInt(request.getParameter("id")));
+
+            UserDataDTO resultData = UserDataDAO.getInstance().searchByID(searchData);
+            request.setAttribute("resultData", resultData);
+            
+            request.getRequestDispatcher("/update.jsp").forward(request, response);  
+        }catch(Exception e){
+            //何らかの理由で失敗したらエラーページにエラー文を渡して表示。想定は不正なアクセスとDBエラー
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

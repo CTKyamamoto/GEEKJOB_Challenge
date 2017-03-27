@@ -1,5 +1,4 @@
-<%@page 
-        import="jums.JumsHelper" %>
+<%@page import="jums.JumsHelper"%>
 <%
     JumsHelper jh = JumsHelper.getInstance();
 %>
@@ -14,7 +13,7 @@
     <body>
          <form action="SearchResult" method="POST">
         名前:
-        <input type="text" name="name">
+        <input type="text" name="name" value="">
         <br><br>
 
         生年:　

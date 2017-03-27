@@ -26,12 +26,13 @@ public class ResultDetail extends HttpServlet {
             throws ServletException, IOException {
         try{
             request.setCharacterEncoding("UTF-8");//リクエストパラメータの文字コードをUTF-8に変更
-
+           
             //DTOオブジェクトにマッピング。DB専用のパラメータに変換
             UserDataDTO searchData = new UserDataDTO();
-            searchData.setUserID(2);
+            //クエリストリングで受け取ったidに変更。
+            searchData.setUserID(Integer.parseInt(request.getParameter("id")));
 
-            UserDataDTO resultData = UserDataDAO .getInstance().searchByID(searchData);
+            UserDataDTO resultData = UserDataDAO.getInstance().searchByID(searchData);
             request.setAttribute("resultData", resultData);
             
             request.getRequestDispatcher("/resultdetail.jsp").forward(request, response);  

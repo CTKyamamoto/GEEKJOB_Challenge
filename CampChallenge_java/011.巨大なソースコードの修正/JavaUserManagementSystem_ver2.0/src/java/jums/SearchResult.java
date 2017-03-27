@@ -3,10 +3,12 @@ package jums;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -25,6 +27,8 @@ public class SearchResult extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        HttpSession hs = request.getSession();
         try{
             request.setCharacterEncoding("UTF-8");//リクエストパラメータの文字コードをUTF-8に変更
         
@@ -38,7 +42,7 @@ public class SearchResult extends HttpServlet {
             UserDataDTO searchData = new UserDataDTO();
             udb.UD2DTOMapping(searchData);
 
-            UserDataDTO resultData = UserDataDAO .getInstance().search(searchData);
+            ArrayList <UserDataDTO> resultData = UserDataDAO.getInstance().search(searchData);
             request.setAttribute("resultData", resultData);
             
             request.getRequestDispatcher("/searchresult.jsp").forward(request, response);  
